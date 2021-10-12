@@ -2,8 +2,7 @@
 #include <QLabel>
 #include "ui_dialog.cpp"
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     QApplication app(argc, argv);
     QDialog widget;
 
