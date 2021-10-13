@@ -17,10 +17,11 @@ HEADERS += \
     glwidget.h \
     mainwindow.h
 
-FORMS +=
+FORMS += \
+    mainwindow.ui
 
 TRANSLATIONS += \
-    InteractiveGraphicsApplications_en_US.ts
+    myqtlglproject_en_US.ts
 CONFIG += lrelease
 CONFIG += embed_translations
 
