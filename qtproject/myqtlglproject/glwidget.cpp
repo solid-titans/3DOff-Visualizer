@@ -77,6 +77,7 @@ void GLWidget::showFileOpenDialog() {
 }
 
 void GLWidget::readOFFFile(const QString &filename) {
+
     std::ifstream stream;
     stream.open(filename.toUtf8(), std::ifstream::in);
 
@@ -111,10 +112,10 @@ void GLWidget::readOFFFile(const QString &filename) {
 
             max.setX(qMax((double)max.x(),x));
             max.setY(qMax((double)max.y(),y));
-            max.setZ(qMax((double)max.y(),z));
+            max.setZ(qMax((double)max.z(),z));
             min.setX(qMin((double)min.x(),x));
             min.setY(qMin((double)min.y(),y));
-            min.setZ(qMin((double)min.y(),z));
+            min.setZ(qMin((double)min.z(),z));
 
             vertices[i] = QVector4D(x,y,z,1.0);
         }
@@ -147,8 +148,8 @@ void GLWidget::genNormals() {
     for (unsigned int i = 0 ; i < numFaces ; i++) {
 
         unsigned int i1 = indices[i*3];
-        unsigned int i2 = indices[i*3*1];
-        unsigned int i3 = indices[i*3*2];
+        unsigned int i2 = indices[i*3+1];
+        unsigned int i3 = indices[i*3+2];
 
         QVector3D v1 = vertices[i1].toVector3D();
         QVector3D v2 = vertices[i2].toVector3D();
@@ -204,8 +205,8 @@ void GLWidget::genTangents() {
     for(unsigned int i =0 ; i < numFaces ; i++) {
 
         unsigned int i1 = indices[i*3];
-        unsigned int i2 = indices[i*3*1];
-        unsigned int i3 = indices[i*3*2];
+        unsigned int i2 = indices[i*3+1];
+        unsigned int i3 = indices[i*3+2];
 
         QVector3D E = vertices[i1].toVector3D();
         QVector3D F = vertices[i2].toVector3D();
