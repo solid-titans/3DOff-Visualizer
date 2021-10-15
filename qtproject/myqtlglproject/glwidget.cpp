@@ -219,17 +219,14 @@ void GLWidget::toggleBackgroundColor(bool toBlack) {
 }
 
 void GLWidget::showFileOpenDialog() {
-    // Defining the file format to open
-    QByteArray fileFormat = "off";
-
     // Opening the file dialog from the user's home directory
+    QFileDialog dialog(this);
+    dialog.setOption(QFileDialog::DontUseNativeDialog, true);
+    dialog.setViewMode(QFileDialog::Detail);
+
     QString fileName;
-    fileName = QFileDialog :: getOpenFileName ( this ,
-    " Open File " ,
-    QDir :: homePath () ,
-    QString ( " %1 Files (*.%2) " )
-    . arg ( QString ( fileFormat . toUpper () ) )
-    . arg ( QString ( fileFormat )));
+    fileName = dialog.getOpenFileName(this,
+               "Open File", QDir::homePath (), "OFF Files (*.off)");
 
     // Verifying if it's a valid file
     if (!fileName.isEmpty()) {
