@@ -4,6 +4,7 @@
 #include <QGLWidget>
 #include <QGLBuffer>
 #include <QGLShader>
+#include <QTimer>
 
 #include<iostream>
 #include<fstream>
@@ -15,17 +16,23 @@ class GLWidget : public QGLWidget
 public:
     explicit GLWidget(QWidget *parent = 0);
     virtual ~GLWidget();
-
-protected:
-    void initializeGL();
-    void resigeGL(int width, int height);
-    void paintGL();
-
 signals:
 
 public slots:
     void toggleBackgroundColor(bool toBlack);
     void showFileOpenDialog();
+    void animate();
+    void takeScreenshot();
+
+protected:
+    void initializeGL();
+    void resigeGL(int width, int height);
+    void paintGL();
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 
 private:
     void readOFFFile(const QString &filename);
@@ -60,6 +67,14 @@ private:
 
     QGLShaderProgram *shaderProgram;
 
+    int texID[2];
+
+    QMatrix4x4 modelViewMatrix;
+    QMatrix4x4 projectionMatrix;
+
+    double zoom;
+
+    QTimer timer;
 
 };
 

@@ -1,6 +1,8 @@
 #include "glwidget.h"
 
 #include <QFileDialog>
+#include <QMessageBox>
+
 #include <cmath>
 
 
@@ -27,8 +29,55 @@ GLWidget::GLWidget(QWidget *parent) :
 }
 
 GLWidget::~GLWidget() {
-    //destroyVBOs();
-    //destroyShaders();
+    destroyVBOs();
+    destroyShaders();
+}
+
+void GLWidget::destroyShaders() {
+    delete vertexShader;
+    vertexShader = NULL;
+
+    delete fragmentShader;
+    fragmentShader = NULL;
+
+    if (shaderProgram) {
+        shaderProgram->release();
+        delete shaderProgram;
+        shaderProgram = NULL;
+    }
+}
+
+void GLWidget::destroyVBOs() {
+
+    if(vboVertices) {
+        vboVertices->release();
+        delete vboVertices;
+        vboVertices = NULL;
+    }
+
+    if(vboNormals) {
+        vboNormals->release();
+        delete vboNormals;
+        vboNormals = NULL;
+    }
+
+    if(vboTexCoords) {
+        vboTexCoords->release();
+        delete vboTexCoords;
+        vboTexCoords = NULL;
+    }
+
+    if(vboTangents) {
+        vboTangents->release();
+        delete vboTangents;
+        vboTangents = NULL;
+    }
+
+    if(vboIndices) {
+        vboIndices->release();
+        delete vboIndices;
+        vboIndices = NULL;
+    }
 }
 
 void GLWidget::initializeGL() {
@@ -263,3 +312,115 @@ void GLWidget::genTangents() {
 
     delete[] bitangents;
 }
+
+void GLWidget::createShaders() {
+
+    destroyShaders();
+
+    QString directory = ":/shaders/glsl/";
+
+    QString vertexShaderFile[] = {
+        directory + "vgouraud.glsl",
+        directory + "vphong.glsl",
+        directory + "vtexture.glsl",
+        directory + "vnormal.glsl",
+    };
+
+    QString fragmentShaderFile[] = {
+         directory + "fgouraud.glsl",
+         directory + "fphong.glsl",
+         directory + "ftexture.glsl",
+         directory + "fnormal.glsl",
+    };
+
+    vertexShader = new QGLShader(QGLShader::Vertex);
+    if(!vertexShader->compileSourceFile(vertexShaderFile[currentShader]))
+        qWarning() << vertexShader->log();
+
+    fragmentShader = new QGLShader(QGLShader::Fragment);
+    if(!fragmentShader->compileSourceFile(fragmentShaderFile[currentShader]))
+        qWarning() << fragmentShader->log();
+
+    shaderProgram = new QGLShaderProgram;
+    shaderProgram->addShader(vertexShader);
+    shaderProgram->addShader(fragmentShader);
+
+    if(!shaderProgram->link())
+        qWarning() << shaderProgram->log() << Qt::endl;
+
+}
+
+void GLWidget::createVBOs() {
+
+    destroyVBOs();
+
+    vboVertices = new QGLBuffer(QGLBuffer::VertexBuffer);
+    vboVertices->create();
+    vboVertices->bind();
+    vboVertices->setUsagePattern(QGLBuffer::StaticDraw);
+    vboVertices->allocate(vertices, numVertices * sizeof(QVector4D));
+
+    delete[] vertices;
+    vertices = NULL;
+
+    vboNormals = new QGLBuffer(QGLBuffer::VertexBuffer);
+    vboNormals->create();
+    vboNormals->bind();
+    vboNormals->setUsagePattern(QGLBuffer::StaticDraw);
+    vboNormals->allocate(normals, numVertices * sizeof(QVector3D));
+
+    delete[] normals;
+    normals = NULL;
+
+    vboTexCoords = new QGLBuffer(QGLBuffer::VertexBuffer);
+    vboTexCoords->create();
+    vboTexCoords->bind();
+    vboTexCoords->setUsagePattern(QGLBuffer::StaticDraw);
+    vboTexCoords->allocate(texCoords, numVertices * sizeof(QVector2D));
+
+    delete[] tangents;
+    tangents = NULL;
+
+    vboIndices = new QGLBuffer(QGLBuffer::IndexBuffer);
+    vboIndices->create();
+    vboIndices->bind();
+    vboIndices->setUsagePattern(QGLBuffer::StaticDraw);
+    vboIndices->allocate(indices, numFaces * 3 * sizeof(unsigned int));
+
+    delete[] indices;
+    indices = NULL;
+}
+
+void GLWidget::takeScreenshot() {
+
+    QImage screenshot = grabFrameBuffer();
+
+    QString fileName;
+    fileName = QFileDialog::getSaveFileName(this, "Save File As", QDir::homePath(), QString("PNG Files (*.png"));
+
+    if(fileName.length()) {
+        if(!fileName.contains(".png"))
+            fileName += ".png";
+        if(screenshot.save(fileName, "PNG")) {
+            QMessageBox::information(this, "Screenshot", "Screenshot taken!", QMessageBox::Ok);
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
