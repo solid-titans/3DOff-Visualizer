@@ -16,7 +16,7 @@ void main() {
 
     float NdotL = dot(N,L);
     float Kd = max(NdotL, 0.0);
-    float Ks = (KdotL < 0.0) ? 0.0 : pow(max(dot(R,E),0.0), shininess);
+    float Ks = (NdotL < 0.0) ? 0.0 : pow(max(dot(R,E),0.0), shininess);
 
     vec4 diffuse = Kd * diffuseProduct;
     vec4 specular = Ks * specularProduct;

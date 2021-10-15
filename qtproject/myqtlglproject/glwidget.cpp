@@ -33,13 +33,17 @@ GLWidget::~GLWidget() {
     destroyShaders();
 }
 
+// Cleaning the shaders pipeline
 void GLWidget::destroyShaders() {
+    // Cleaning the vertexShader object
     delete vertexShader;
     vertexShader = NULL;
 
+    // Cleaning the fragmentShader object
     delete fragmentShader;
     fragmentShader = NULL;
 
+    // if shaderProgram != NULL clean it too
     if (shaderProgram) {
         shaderProgram->release();
         delete shaderProgram;
@@ -47,8 +51,8 @@ void GLWidget::destroyShaders() {
     }
 }
 
+// Freeing the memory of all VBOs
 void GLWidget::destroyVBOs() {
-
     if(vboVertices) {
         vboVertices->release();
         delete vboVertices;
@@ -92,8 +96,8 @@ void GLWidget::paintGL() {
 
 }
 
+// Change the background color (White <-> Black)
 void GLWidget::toggleBackgroundColor(bool toBlack) {
-
     if(toBlack)
         glClearColor(0,0,0,1);
     else
@@ -103,20 +107,25 @@ void GLWidget::toggleBackgroundColor(bool toBlack) {
 }
 
 void GLWidget::showFileOpenDialog() {
+    // Defining the file format to open
     QByteArray fileFormat = "off";
-    QString fileName ;
+
+    // Opening the file dialog from the user's home directory
+    QString fileName;
     fileName = QFileDialog :: getOpenFileName ( this ,
     " Open File " ,
     QDir :: homePath () ,
     QString ( " %1 Files (*.%2) " )
     . arg ( QString ( fileFormat . toUpper () ) )
     . arg ( QString ( fileFormat )));
+
+    // Verifying if it's a valid file
     if (!fileName.isEmpty()) {
         readOFFFile(fileName);
 
-        genNormals();
-        genTexCoordsCylinder();
-        genTangents();
+        genNormals();           // Generating the normals for the meshes
+        genTexCoordsCylinder(); // Generating cylindrical texture coordinates for the mesh vertices
+        genTangents();          // Estimating per-vertex tangent vectors required by Normal Mapping
         /*
         createVBOs();
         createShaders();
@@ -130,6 +139,7 @@ void GLWidget::readOFFFile(const QString &filename) {
     std::ifstream stream;
     stream.open(filename.toUtf8(), std::ifstream::in);
 
+    // Checking if the file is already opened
     if(!stream.is_open()) {
         qWarning("Cannot open file.");
         return;
@@ -146,8 +156,11 @@ void GLWidget::readOFFFile(const QString &filename) {
     delete[] indices;
     indices = new unsigned int[numFaces * 3];
 
+    // If the object has vertex
+    // build the object inside the vertices array
     if(numVertices > 0) {
-
+        // Verifying if the positions decribed inside the .OFF file
+        // is valid
         double minLim = std::numeric_limits<double>::min();
         double maxLim = std::numeric_limits<double>::max();
         QVector4D max(minLim, minLim, minLim, 1.0);
@@ -156,7 +169,6 @@ void GLWidget::readOFFFile(const QString &filename) {
         for(unsigned int i =0 ; i < numVertices; i++) {
 
             double x,y,z;
-
             stream >> x >> y >> z;
 
             max.setX(qMax((double)max.x(),x));
@@ -180,8 +192,8 @@ void GLWidget::readOFFFile(const QString &filename) {
 
     for(unsigned int i = 0; i < numFaces ; i++) {
         unsigned int a,b,c;
-
         stream >> line >> a >> b >> c;
+
         indices[i*3]   = a;
         indices[i*3+1] = b;
         indices[i*3+2] = c;
@@ -190,13 +202,14 @@ void GLWidget::readOFFFile(const QString &filename) {
     stream.close();
 }
 
+// Generating the normals for the meshes
 void GLWidget::genNormals() {
-    delete [] normals;
+    delete[] normals;
     normals = new QVector3D[numVertices];
 
-    for (unsigned int i = 0 ; i < numFaces ; i++) {
-
-        unsigned int i1 = indices[i*3];
+    for (unsigned int i = 0; i < numFaces; i++) {
+        // Storing the indices for the faces
+        unsigned int i1 = indices[i*3  ];
         unsigned int i2 = indices[i*3+1];
         unsigned int i3 = indices[i*3+2];
 
@@ -204,6 +217,7 @@ void GLWidget::genNormals() {
         QVector3D v2 = vertices[i2].toVector3D();
         QVector3D v3 = vertices[i3].toVector3D();
 
+        // Calculating the normals for all the faces
         QVector3D faceNormal = QVector3D::crossProduct(v2 - v1, v3 - v1);
 
         normals[i1] += faceNormal;
@@ -212,48 +226,49 @@ void GLWidget::genNormals() {
 
     }
 
-    for(unsigned int i =0; i < numVertices; i++)
+    // Normalizing all normals
+    for(unsigned int i = 0; i < numVertices; i++)
         normals[i].normalize();
 }
 
+// Generating cylindrical texture coordinates for the mesh vertices
 void GLWidget::genTexCoordsCylinder() {
     delete[] texCoords;
     texCoords = new QVector2D[numVertices];
 
+    // Storing the limits that a position could has
     double minLim = std::numeric_limits<double>::min();
     double maxLim = std::numeric_limits<double>::max();
-
     QVector2D max(minLim, minLim);
     QVector2D min(maxLim, maxLim);
 
-    for(unsigned int i =0; i < numVertices; i++) {
-
+    for(unsigned int i = 0; i < numVertices; i++) {
         QVector2D pos = vertices[i].toVector2D();
 
         max.setX(qMax(max.x(), pos.x()));
         max.setY(qMax(max.y(), pos.y()));
         min.setX(qMin(min.x(), pos.x()));
         min.setY(qMin(min.y(), pos.y()));
+
     }
 
     QVector2D size = max - min;
-    for (unsigned int i = 0 ; i < numVertices ; i++) {
-
+    for (unsigned int i = 0; i < numVertices; i++) {
         double x = 2.0 * (vertices[i].x() - min.x()) / size.x() - 1.0;
         texCoords[i] = QVector2D(acos(x) / M_PI, vertices[i].y() - min.y()) / size.y();
+
     }
 }
 
+// Estimating per-vertex tangent vectors required by Normal Mapping
 void GLWidget::genTangents() {
-
     delete[] tangents;
 
     tangents = new QVector4D[numVertices];
     QVector3D *bitangents = new QVector3D[numVertices];
 
-    for(unsigned int i =0 ; i < numFaces ; i++) {
-
-        unsigned int i1 = indices[i*3];
+    for(unsigned int i = 0; i < numFaces; i++) {
+        unsigned int i1 = indices[i*3  ];
         unsigned int i2 = indices[i*3+1];
         unsigned int i3 = indices[i*3+2];
 
@@ -313,8 +328,8 @@ void GLWidget::genTangents() {
     delete[] bitangents;
 }
 
+// Creating the shaders and linking them to the shaderProgram
 void GLWidget::createShaders() {
-
     destroyShaders();
 
     QString directory = ":/shaders/glsl/";
@@ -350,8 +365,15 @@ void GLWidget::createShaders() {
 
 }
 
+/* Creating all Vertex Buffer Objects
+ *
+ * vboVertices: vertex positions of type QVector4D.
+ * vboNormals: vertex normals of type QVector3D.
+ * vboTexCoords: texture coordinates of type QVector2D.
+ * vboTangents: tangent vectors of type QVector4D.
+ *
+*/
 void GLWidget::createVBOs() {
-
     destroyVBOs();
 
     vboVertices = new QGLBuffer(QGLBuffer::VertexBuffer);
@@ -391,13 +413,14 @@ void GLWidget::createVBOs() {
     indices = NULL;
 }
 
+// Saving a image from the actual frame buffer on disk
 void GLWidget::takeScreenshot() {
-
     QImage screenshot = grabFrameBuffer();
 
     QString fileName;
-    fileName = QFileDialog::getSaveFileName(this, "Save File As", QDir::homePath(), QString("PNG Files (*.png"));
+    fileName = QFileDialog::getSaveFileName(this, "Save File As", QDir::homePath(), QString("PNG Files (*.png)"));
 
+    // If filename exists write the image to disk
     if(fileName.length()) {
         if(!fileName.contains(".png"))
             fileName += ".png";

@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = myqtlglproject1.0.0
-DISTDIR = /home/gustavolr/HD/code/qtproject/build-myqtlglproject-Desktop-Debug/.tmp/myqtlglproject1.0.0
+DISTDIR = /home/lucas/HDSeguro/code/3DOff-Visualizer/qtproject/build-myqtlglproject-Desktop-Debug/.tmp/myqtlglproject1.0.0
 LINK          = g++
 LFLAGS        = 
 LIBS          = $(SUBLIBS) /usr/lib/libQt5OpenGL.so /usr/lib/libQt5Widgets.so /usr/lib/libQt5Gui.so /usr/lib/libQt5Core.so -lGL -lpthread   
@@ -52,14 +52,24 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../myqtlglproject/glwidget.cpp \
+SOURCES       = ../myqtlglproject/camera.cpp \
+		../myqtlglproject/glwidget.cpp \
+		../myqtlglproject/light.cpp \
 		../myqtlglproject/main.cpp \
-		../myqtlglproject/mainwindow.cpp qrc_qmake_qmake_qm_files.cpp \
+		../myqtlglproject/mainwindow.cpp \
+		../myqtlglproject/material.cpp \
+		../myqtlglproject/trackball.cpp qrc_resources.cpp \
+		qrc_qmake_qmake_qm_files.cpp \
 		moc_glwidget.cpp \
 		moc_mainwindow.cpp
-OBJECTS       = glwidget.o \
+OBJECTS       = camera.o \
+		glwidget.o \
+		light.o \
 		main.o \
 		mainwindow.o \
+		material.o \
+		trackball.o \
+		qrc_resources.o \
 		qrc_qmake_qmake_qm_files.o \
 		moc_glwidget.o \
 		moc_mainwindow.o
@@ -97,7 +107,6 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_KIOGui.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOWidgets.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Kirigami2.pri \
-		/usr/lib/qt/mkspecs/modules/qt_KItemModels.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KItemViews.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KJobWidgets.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KNewStuff.pri \
@@ -246,6 +255,8 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xkbcommon_support_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xml.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xml_private.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_QuickAddons.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Solid.pri \
 		/usr/lib/qt/mkspecs/modules/qt_SonnetCore.pri \
@@ -255,7 +266,6 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
-		../myqtlglproject/.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -277,10 +287,18 @@ DIST          = /usr/lib/qt/mkspecs/features/spec_pre.prf \
 		/usr/lib/qt/mkspecs/features/exceptions.prf \
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
-		../myqtlglproject/myqtlglproject.pro ../myqtlglproject/glwidget.h \
-		../myqtlglproject/mainwindow.h ../myqtlglproject/glwidget.cpp \
+		../myqtlglproject/myqtlglproject.pro ../myqtlglproject/camera.h \
+		../myqtlglproject/glwidget.h \
+		../myqtlglproject/light.h \
+		../myqtlglproject/mainwindow.h \
+		../myqtlglproject/material.h \
+		../myqtlglproject/trackball.h ../myqtlglproject/camera.cpp \
+		../myqtlglproject/glwidget.cpp \
+		../myqtlglproject/light.cpp \
 		../myqtlglproject/main.cpp \
-		../myqtlglproject/mainwindow.cpp
+		../myqtlglproject/mainwindow.cpp \
+		../myqtlglproject/material.cpp \
+		../myqtlglproject/trackball.cpp
 QMAKE_TARGET  = myqtlglproject
 DESTDIR       = 
 TARGET        = myqtlglproject
@@ -326,7 +344,6 @@ Makefile: ../myqtlglproject/myqtlglproject.pro /usr/lib/qt/mkspecs/linux-g++/qma
 		/usr/lib/qt/mkspecs/modules/qt_KIOGui.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KIOWidgets.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Kirigami2.pri \
-		/usr/lib/qt/mkspecs/modules/qt_KItemModels.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KItemViews.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KJobWidgets.pri \
 		/usr/lib/qt/mkspecs/modules/qt_KNewStuff.pri \
@@ -475,6 +492,8 @@ Makefile: ../myqtlglproject/myqtlglproject.pro /usr/lib/qt/mkspecs/linux-g++/qma
 		/usr/lib/qt/mkspecs/modules/qt_lib_xkbcommon_support_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xml.pri \
 		/usr/lib/qt/mkspecs/modules/qt_lib_xml_private.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns.pri \
+		/usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns_private.pri \
 		/usr/lib/qt/mkspecs/modules/qt_QuickAddons.pri \
 		/usr/lib/qt/mkspecs/modules/qt_Solid.pri \
 		/usr/lib/qt/mkspecs/modules/qt_SonnetCore.pri \
@@ -484,7 +503,6 @@ Makefile: ../myqtlglproject/myqtlglproject.pro /usr/lib/qt/mkspecs/linux-g++/qma
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -507,6 +525,7 @@ Makefile: ../myqtlglproject/myqtlglproject.pro /usr/lib/qt/mkspecs/linux-g++/qma
 		/usr/lib/qt/mkspecs/features/yacc.prf \
 		/usr/lib/qt/mkspecs/features/lex.prf \
 		../myqtlglproject/myqtlglproject.pro \
+		../myqtlglproject/resources.qrc \
 		qmake_qmake_qm_files.qrc
 	$(QMAKE) -o Makefile ../myqtlglproject/myqtlglproject.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
 /usr/lib/qt/mkspecs/features/spec_pre.prf:
@@ -543,7 +562,6 @@ Makefile: ../myqtlglproject/myqtlglproject.pro /usr/lib/qt/mkspecs/linux-g++/qma
 /usr/lib/qt/mkspecs/modules/qt_KIOGui.pri:
 /usr/lib/qt/mkspecs/modules/qt_KIOWidgets.pri:
 /usr/lib/qt/mkspecs/modules/qt_Kirigami2.pri:
-/usr/lib/qt/mkspecs/modules/qt_KItemModels.pri:
 /usr/lib/qt/mkspecs/modules/qt_KItemViews.pri:
 /usr/lib/qt/mkspecs/modules/qt_KJobWidgets.pri:
 /usr/lib/qt/mkspecs/modules/qt_KNewStuff.pri:
@@ -692,6 +710,8 @@ Makefile: ../myqtlglproject/myqtlglproject.pro /usr/lib/qt/mkspecs/linux-g++/qma
 /usr/lib/qt/mkspecs/modules/qt_lib_xkbcommon_support_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_xml.pri:
 /usr/lib/qt/mkspecs/modules/qt_lib_xml_private.pri:
+/usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns.pri:
+/usr/lib/qt/mkspecs/modules/qt_lib_xmlpatterns_private.pri:
 /usr/lib/qt/mkspecs/modules/qt_QuickAddons.pri:
 /usr/lib/qt/mkspecs/modules/qt_Solid.pri:
 /usr/lib/qt/mkspecs/modules/qt_SonnetCore.pri:
@@ -701,7 +721,6 @@ Makefile: ../myqtlglproject/myqtlglproject.pro /usr/lib/qt/mkspecs/linux-g++/qma
 /usr/lib/qt/mkspecs/features/qt_config.prf:
 /usr/lib/qt/mkspecs/linux-g++/qmake.conf:
 /usr/lib/qt/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /usr/lib/qt/mkspecs/features/exclusive_builds.prf:
 /usr/lib/qt/mkspecs/features/toolchain.prf:
 /usr/lib/qt/mkspecs/features/default_pre.prf:
@@ -724,6 +743,7 @@ Makefile: ../myqtlglproject/myqtlglproject.pro /usr/lib/qt/mkspecs/linux-g++/qma
 /usr/lib/qt/mkspecs/features/yacc.prf:
 /usr/lib/qt/mkspecs/features/lex.prf:
 ../myqtlglproject/myqtlglproject.pro:
+../myqtlglproject/resources.qrc:
 qmake_qmake_qm_files.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../myqtlglproject/myqtlglproject.pro -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug
@@ -740,10 +760,10 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../myqtlglproject/myqtlglproject_en_US.ts $(DISTDIR)/
-	$(COPY_FILE) --parents qmake_qmake_qm_files.qrc $(DISTDIR)/
+	$(COPY_FILE) --parents ../myqtlglproject/resources.qrc qmake_qmake_qm_files.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../myqtlglproject/glwidget.h ../myqtlglproject/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../myqtlglproject/glwidget.cpp ../myqtlglproject/main.cpp ../myqtlglproject/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../myqtlglproject/camera.h ../myqtlglproject/glwidget.h ../myqtlglproject/light.h ../myqtlglproject/mainwindow.h ../myqtlglproject/material.h ../myqtlglproject/trackball.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../myqtlglproject/camera.cpp ../myqtlglproject/glwidget.cpp ../myqtlglproject/light.cpp ../myqtlglproject/main.cpp ../myqtlglproject/mainwindow.cpp ../myqtlglproject/material.cpp ../myqtlglproject/trackball.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../myqtlglproject/mainwindow.ui $(DISTDIR)/
 	$(COPY_FILE) --parents ../myqtlglproject/myqtlglproject_en_US.ts $(DISTDIR)/
 
@@ -775,9 +795,23 @@ compiler_lrelease_clean:
 .qm/myqtlglproject_en_US.qm: ../myqtlglproject/myqtlglproject_en_US.ts
 	/usr/bin/lrelease ../myqtlglproject/myqtlglproject_en_US.ts -qm .qm/myqtlglproject_en_US.qm
 
-compiler_rcc_make_all: qrc_qmake_qmake_qm_files.cpp
+compiler_rcc_make_all: qrc_resources.cpp qrc_qmake_qmake_qm_files.cpp
 compiler_rcc_clean:
-	-$(DEL_FILE) qrc_qmake_qmake_qm_files.cpp
+	-$(DEL_FILE) qrc_resources.cpp qrc_qmake_qmake_qm_files.cpp
+qrc_resources.cpp: ../myqtlglproject/resources.qrc \
+		/usr/bin/rcc \
+		../myqtlglproject/glsl/vtexture.glsl \
+		../myqtlglproject/glsl/fphong.glsl \
+		../myqtlglproject/glsl/vgouraud.glsl \
+		../myqtlglproject/glsl/ftexture.glsl \
+		../myqtlglproject/glsl/vphong.glsl \
+		../myqtlglproject/glsl/fgouraud.glsl \
+		../myqtlglproject/glsl/vnormal.glsl \
+		../myqtlglproject/glsl/fnormal.glsl \
+		../myqtlglproject/brick/bricksNormal.png \
+		../myqtlglproject/brick/bricksDiffuse.png
+	/usr/bin/rcc -name resources ../myqtlglproject/resources.qrc -o qrc_resources.cpp
+
 qrc_qmake_qmake_qm_files.cpp: qmake_qmake_qm_files.qrc \
 		/usr/bin/rcc \
 		.qm/myqtlglproject_en_US.qm
@@ -795,12 +829,12 @@ compiler_moc_header_clean:
 moc_glwidget.cpp: ../myqtlglproject/glwidget.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/gustavolr/HD/code/qtproject/build-myqtlglproject-Desktop-Debug/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/gustavolr/HD/code/qtproject/myqtlglproject -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include ../myqtlglproject/glwidget.h -o moc_glwidget.cpp
+	/usr/bin/moc $(DEFINES) --include /home/lucas/HDSeguro/code/3DOff-Visualizer/qtproject/build-myqtlglproject-Desktop-Debug/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/lucas/HDSeguro/code/3DOff-Visualizer/qtproject/myqtlglproject -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include ../myqtlglproject/glwidget.h -o moc_glwidget.cpp
 
 moc_mainwindow.cpp: ../myqtlglproject/mainwindow.h \
 		moc_predefs.h \
 		/usr/bin/moc
-	/usr/bin/moc $(DEFINES) --include /home/gustavolr/HD/code/qtproject/build-myqtlglproject-Desktop-Debug/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/gustavolr/HD/code/qtproject/myqtlglproject -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include ../myqtlglproject/mainwindow.h -o moc_mainwindow.cpp
+	/usr/bin/moc $(DEFINES) --include /home/lucas/HDSeguro/code/3DOff-Visualizer/qtproject/build-myqtlglproject-Desktop-Debug/moc_predefs.h -I/usr/lib/qt/mkspecs/linux-g++ -I/home/lucas/HDSeguro/code/3DOff-Visualizer/qtproject/myqtlglproject -I/usr/include/qt -I/usr/include/qt/QtOpenGL -I/usr/include/qt/QtWidgets -I/usr/include/qt/QtGui -I/usr/include/qt/QtCore -I. -I/usr/include/c++/11.1.0 -I/usr/include/c++/11.1.0/x86_64-pc-linux-gnu -I/usr/include/c++/11.1.0/backward -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include -I/usr/local/include -I/usr/lib/gcc/x86_64-pc-linux-gnu/11.1.0/include-fixed -I/usr/include ../myqtlglproject/mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -824,8 +858,14 @@ compiler_clean: compiler_lrelease_clean compiler_rcc_clean compiler_moc_predefs_
 
 ####### Compile
 
+camera.o: ../myqtlglproject/camera.cpp ../myqtlglproject/camera.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o camera.o ../myqtlglproject/camera.cpp
+
 glwidget.o: ../myqtlglproject/glwidget.cpp ../myqtlglproject/glwidget.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o glwidget.o ../myqtlglproject/glwidget.cpp
+
+light.o: ../myqtlglproject/light.cpp ../myqtlglproject/light.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o light.o ../myqtlglproject/light.cpp
 
 main.o: ../myqtlglproject/main.cpp ../myqtlglproject/mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../myqtlglproject/main.cpp
@@ -833,6 +873,15 @@ main.o: ../myqtlglproject/main.cpp ../myqtlglproject/mainwindow.h
 mainwindow.o: ../myqtlglproject/mainwindow.cpp ../myqtlglproject/mainwindow.h \
 		ui_mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../myqtlglproject/mainwindow.cpp
+
+material.o: ../myqtlglproject/material.cpp ../myqtlglproject/material.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o material.o ../myqtlglproject/material.cpp
+
+trackball.o: ../myqtlglproject/trackball.cpp ../myqtlglproject/trackball.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o trackball.o ../myqtlglproject/trackball.cpp
+
+qrc_resources.o: qrc_resources.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp
 
 qrc_qmake_qmake_qm_files.o: qrc_qmake_qmake_qm_files.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qmake_qmake_qm_files.o qrc_qmake_qmake_qm_files.cpp
