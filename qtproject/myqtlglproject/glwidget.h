@@ -10,6 +10,11 @@
 #include<fstream>
 #include<limits>
 
+#include"camera.h"
+#include"light.h"
+#include"material.h"
+#include"trackball.h"
+
 class GLWidget : public QGLWidget
 {
     Q_OBJECT
@@ -71,6 +76,12 @@ private:
 
     QMatrix4x4 modelViewMatrix;
     QMatrix4x4 projectionMatrix;
+
+    Camera camera;
+    Light light;
+    Material material;
+
+    TrackBall trackBall;
 
     double zoom;
 
