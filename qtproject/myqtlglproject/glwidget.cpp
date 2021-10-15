@@ -5,6 +5,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QMouseEvent>
+#include <QOpenGLFunctions>
 
 #include <cmath>
 
@@ -95,9 +96,11 @@ void GLWidget::initializeGL() {
 
     QImage texColor = QImage(texturesDir + "bricksDiffuse.png");
     QImage texNormal = QImage(texturesDir + "bricksNormal.png");
-    glActiveTexture(GL_TEXTURE);
+
+    QOpenGLFunctions glFuncs(QOpenGLContext::currentContext());
+    glFuncs.glActiveTexture(GL_TEXTURE);
     texID[0] = bindTexture(texColor);
-    glActiveTexture(GL_TEXTURE);
+    glFuncs.glActiveTexture(GL_TEXTURE);
     texID[1] = bindTexture(texNormal);
 
     connect(&timer, SIGNAL(timeout()), this, SLOT(animate()));
@@ -569,17 +572,17 @@ void GLWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 void GLWidget::mouseMoveEvent(QMouseEvent *event) {
-    trackBall.mouseMove(event->posF());
+    trackBall.mouseMove(event->pos());
 }
 
 void GLWidget::mousePressEvent(QMouseEvent *event) {
     if(event->button() & Qt::LeftButton)
-        trackBall.mousePress(event->posF());
+        trackBall.mousePress(event->pos());
 }
 
 void GLWidget::mouseReleaseEvent(QMouseEvent *event) {
     if(event->button() == Qt::LeftButton)
-        trackBall.mouseRelease(event->posF());
+        trackBall.mouseRelease(event->pos());
 }
 
 void GLWidget::wheelEvent(QWheelEvent *event) {
