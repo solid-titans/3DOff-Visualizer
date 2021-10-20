@@ -130,6 +130,7 @@ color: rgb(255, 255, 255);</string>
    <header>glwidget.h</header>
    <container>1</container>
    <slots>
+    <signal>statusBarMessage(QString)</signal>
     <slot>toggleBackgroundColor(bool)</slot>
     <slot>showFileOpenDialog()</slot>
    </slots>
@@ -182,6 +183,22 @@ color: rgb(255, 255, 255);</string>
     <hint type="destinationlabel">
      <x>265</x>
      <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>widget</sender>
+   <signal>statusBarMessage(QString)</signal>
+   <receiver>statusbar</receiver>
+   <slot>showMessage(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>265</x>
+     <y>246</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>587</y>
     </hint>
    </hints>
   </connection>

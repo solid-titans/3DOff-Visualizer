@@ -22,6 +22,7 @@ public:
     explicit GLWidget(QWidget *parent = 0);
     virtual ~GLWidget();
 signals:
+    void statusBarMessage(QString ns);
 
 public slots:
     void toggleBackgroundColor(bool toBlack);

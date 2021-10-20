@@ -8,6 +8,7 @@
 #include <QOpenGLFunctions>
 
 #include <cmath>
+#include <iostream>
 
 
 GLWidget::GLWidget(QWidget *parent) :
@@ -30,6 +31,10 @@ GLWidget::GLWidget(QWidget *parent) :
     fragmentShader = NULL;
 
     currentShader = 0;
+
+    zoom = 0.0;
+
+    //fpsCounter = 0;
 }
 
 GLWidget::~GLWidget() {
@@ -134,37 +139,18 @@ void GLWidget::paintGL () {
     modelViewMatrix.rotate(trackBall.getRotation());
 
     shaderProgram->bind() ;
+    shaderProgram->setUniformValue("modelViewMatrix",modelViewMatrix);
+    shaderProgram->setUniformValue("projectionMatrix", projectionMatrix) ;
+    shaderProgram->setUniformValue("normalMatrix",modelViewMatrix.normalMatrix());
 
-    shaderProgram->setUniformValue("modelViewMatrix",
-    modelViewMatrix);
+    QVector4D ambientProduct = light.ambient * material.ambient;
+    QVector4D diffuseProduct = light.diffuse * material.diffuse;
+    QVector4D specularProduct = light.specular * material.specular;
 
-    shaderProgram->setUniformValue("projectionMatrix",
-    projectionMatrix) ;
-
-    shaderProgram->setUniformValue("normalMatrix",
-    modelViewMatrix.normalMatrix());
-
-    QVector4D ambientProduct = light.ambient * material.
-    ambient;
-
-    QVector4D diffuseProduct = light.diffuse * material.
-    diffuse;
-
-    QVector4D specularProduct = light.specular * material.
-    specular;
-
-    shaderProgram->setUniformValue("lightPosition", light.
-    position);
-
-    shaderProgram->setUniformValue("ambientProduct",
-    ambientProduct) ;
-
-    shaderProgram->setUniformValue("diffuseProduct",
-    diffuseProduct);
-
-    shaderProgram->setUniformValue("specularProduct",
-    specularProduct) ;
-
+    shaderProgram->setUniformValue("lightPosition", light.position);
+    shaderProgram->setUniformValue("ambientProduct",ambientProduct) ;
+    shaderProgram->setUniformValue("diffuseProduct",diffuseProduct);
+    shaderProgram->setUniformValue("specularProduct",specularProduct) ;
     shaderProgram->setUniformValue ("shininess", static_cast<GLfloat>(material.shininess));
 
     shaderProgram->setUniformValue("texColorMap", 0);
@@ -176,20 +162,17 @@ void GLWidget::paintGL () {
 
     vboVertices ->bind();
     shaderProgram->enableAttributeArray("vPosition");
-    shaderProgram->setAttributeBuffer("vPosition", GL_FLOAT,
-    0, 4, 0);
+    shaderProgram->setAttributeBuffer("vPosition", GL_FLOAT,0, 4, 0);
 
     vboNormals->bind();
     shaderProgram->enableAttributeArray("vNormal");
-    shaderProgram->setAttributeBuffer("vNormal", GL_FLOAT,
-    0, 3, 0);
+    shaderProgram->setAttributeBuffer("vNormal", GL_FLOAT,0, 3, 0);
 
-    vboTexCoords ->bind() ;
+    vboTexCoords->bind() ;
     shaderProgram->enableAttributeArray("vTexCoord");
-    shaderProgram->setAttributeBuffer("vTexCoord", GL_FLOAT,
-    0,2,0);
+    shaderProgram->setAttributeBuffer("vTexCoord", GL_FLOAT,0,2,0);
 
-    vboTangents ->bind() ;
+    vboTangents->bind() ;
     shaderProgram->enableAttributeArray("vTangent");
     shaderProgram->setAttributeBuffer ("vTangent", GL_FLOAT, 0, 4, 0);
     vboIndices ->bind() ;
@@ -220,13 +203,18 @@ void GLWidget::toggleBackgroundColor(bool toBlack) {
 
 void GLWidget::showFileOpenDialog() {
     // Opening the file dialog from the user's home directory
-    QFileDialog dialog(this);
-    dialog.setOption(QFileDialog::DontUseNativeDialog, true);
-    dialog.setViewMode(QFileDialog::Detail);
+    QByteArray fileFormat = "off";
 
     QString fileName;
-    fileName = dialog.getOpenFileName(this,
-               "Open File", QDir::homePath (), "OFF Files (*.off)");
+    QStringList fileNames;
+    fileName = QFileDialog :: getOpenFileName ( this ,
+    "Open File" ,
+    QDir::home().absolutePath() ,
+    QString ( "%1 Files (*.%2)" )
+    . arg ( QString ( fileFormat . toUpper () ) )
+    . arg ( QString ( fileFormat )),nullptr,QFileDialog::DontUseNativeDialog);
+
+    std::cout << fileName.toStdString() << std::endl;
 
     // Verifying if it's a valid file
     if (!fileName.isEmpty()) {
@@ -235,10 +223,10 @@ void GLWidget::showFileOpenDialog() {
         genNormals();           // Generating the normals for the meshes
         genTexCoordsCylinder(); // Generating cylindrical texture coordinates for the mesh vertices
         genTangents();          // Estimating per-vertex tangent vectors required by Normal Mapping
-        /*
+
         createVBOs();
         createShaders();
-        */
+
         updateGL();
     }
 }
@@ -338,6 +326,8 @@ void GLWidget::genNormals() {
     // Normalizing all normals
     for(unsigned int i = 0; i < numVertices; i++)
         normals[i].normalize();
+
+    emit statusBarMessage(QString("Samples %1, Faces %2").arg(numVertices).arg(numFaces));
 }
 
 // Generating cylindrical texture coordinates for the mesh vertices
