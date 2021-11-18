@@ -212,7 +212,7 @@ void GLWidget::showFileOpenDialog() {
     QDir::home().absolutePath() ,
     QString ( "%1 Files (*.%2)" )
     . arg ( QString ( fileFormat . toUpper () ) )
-    . arg ( QString ( fileFormat )),nullptr,QFileDialog::DontUseNativeDialog);
+    . arg ( QString ( fileFormat )), nullptr, QFileDialog::DontUseNativeDialog);
 
     std::cout << fileName.toStdString() << std::endl;
 
@@ -263,7 +263,7 @@ void GLWidget::readOFFFile(const QString &filename) {
         QVector4D max(minLim, minLim, minLim, 1.0);
         QVector4D min(maxLim, maxLim, maxLim, 1.0);
 
-        for(unsigned int i =0 ; i < numVertices; i++) {
+        for(unsigned int i = 0; i < numVertices; i++) {
 
             double x,y,z;
             stream >> x >> y >> z;
@@ -575,17 +575,3 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event) {
 void GLWidget::wheelEvent(QWheelEvent *event) {
     zoom += 0.001 * event->angleDelta().y();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

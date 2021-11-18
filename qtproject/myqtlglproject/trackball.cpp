@@ -1,10 +1,9 @@
 #include "trackball.h"
 
 TrackBall::TrackBall() : rad2deg(180.0 / M_PI) {
-
     velocity = 0.0;
     trackingMouse = false;
-    lastTime = QTime::currentTime() ;
+    lastTime = QTime::currentTime();
 }
 
 void TrackBall::mouseMove(const QPointF &p) {
@@ -58,13 +57,11 @@ void TrackBall::mousePress(const QPointF &p) {
 }
 
 void TrackBall::mouseRelease(const QPointF &p) {
-
     mouseMove(p);
     trackingMouse = false;
 }
 
 void TrackBall::resizeViewport(int width, int height) {
-
     viewportWidth = static_cast<double>(width) ;
     viewportHeight = static_cast<double>(height) ;
 }

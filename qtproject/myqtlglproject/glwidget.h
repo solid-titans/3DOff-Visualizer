@@ -6,14 +6,14 @@
 #include <QGLShader>
 #include <QTimer>
 
-#include<iostream>
-#include<fstream>
-#include<limits>
+#include <iostream>
+#include <fstream>
+#include <limits>
 
-#include"camera.h"
-#include"light.h"
-#include"material.h"
-#include"trackball.h"
+#include "camera.h"
+#include "light.h"
+#include "material.h"
+#include "trackball.h"
 
 class GLWidget : public QGLWidget
 {
