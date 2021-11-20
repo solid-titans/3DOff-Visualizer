@@ -62,35 +62,35 @@ color: rgb(255, 255, 255);</string>
    </property>
    <widget class="QMenu" name="menuArquivo">
     <property name="title">
-     <string>Arquivo</string>
+     <string>File</string>
     </property>
-    <addaction name="actionAbrir"/>
+    <addaction name="actionOpenFile"/>
    </widget>
    <widget class="QMenu" name="menuTexturas">
     <property name="title">
-     <string>Texturas</string>
+     <string>Textures</string>
     </property>
-    <addaction name="actionPredefinida_1"/>
+    <addaction name="actionPredefinida"/>
    </widget>
    <widget class="QMenu" name="menuShaders">
     <property name="title">
      <string>Shaders</string>
     </property>
     <addaction name="actionGurro"/>
-    <addaction name="actionFong"/>
-    <addaction name="actionFong_com_Normal"/>
+    <addaction name="actionPhong"/>
+    <addaction name="actionPhong_with_Normal"/>
    </widget>
    <addaction name="menuArquivo"/>
    <addaction name="menuTexturas"/>
    <addaction name="menuShaders"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionAbrir">
+  <action name="actionOpenFile">
    <property name="text">
-    <string>Abrir</string>
+    <string>Open</string>
    </property>
   </action>
-  <action name="actionPredefinida_1">
+  <action name="actionPredefinida">
    <property name="text">
     <string>Predefinida 1</string>
    </property>
@@ -103,14 +103,14 @@ color: rgb(255, 255, 255);</string>
     <string>Gurro (Default)</string>
    </property>
   </action>
-  <action name="actionFong">
+  <action name="actionPhong">
    <property name="text">
-    <string>Fong</string>
+    <string>Phong</string>
    </property>
   </action>
-  <action name="actionFong_com_Normal">
+  <action name="actionPhong_with_Normal">
    <property name="text">
-    <string>Normal Textura</string>
+    <string>Normal Texture</string>
    </property>
    <property name="toolTip">
     <string>Phong Normal</string>
@@ -172,7 +172,7 @@ color: rgb(255, 255, 255);</string>
    </hints>
   </connection>
   <connection>
-   <sender>actionAbrir</sender>
+   <sender>actionOpenFile</sender>
    <signal>triggered()</signal>
    <receiver>widget</receiver>
    <slot>showFileOpenDialog()</slot>
@@ -188,7 +188,7 @@ color: rgb(255, 255, 255);</string>
    </hints>
   </connection>
   <connection>
-   <sender>actionFong</sender>
+   <sender>actionPhong</sender>
    <signal>triggered()</signal>
    <receiver>widget</receiver>
    <slot>fong()</slot>
@@ -220,7 +220,7 @@ color: rgb(255, 255, 255);</string>
    </hints>
   </connection>
   <connection>
-   <sender>actionFong_com_Normal</sender>
+   <sender>actionPhong_with_Normal</sender>
    <signal>triggered()</signal>
    <receiver>widget</receiver>
    <slot>normal()</slot>
@@ -236,7 +236,7 @@ color: rgb(255, 255, 255);</string>
    </hints>
   </connection>
   <connection>
-   <sender>actionPredefinida_1</sender>
+   <sender>actionPredefinida</sender>
    <signal>triggered()</signal>
    <receiver>widget</receiver>
    <slot>textura()</slot>
