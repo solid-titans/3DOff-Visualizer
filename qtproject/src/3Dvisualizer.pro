@@ -28,7 +28,7 @@ FORMS += \
     mainwindow.ui
 
 TRANSLATIONS += \
-    projeto1_en_US.ts
+    3Dvisualizer_en_US.ts
 CONFIG += lrelease
 CONFIG += embed_translations
 
