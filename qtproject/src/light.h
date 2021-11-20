@@ -3,8 +3,8 @@
 
 #include <QVector4D>
 
-class Light {
-
+class Light
+{
 public:
     Light();
 

@@ -3,8 +3,8 @@
 
 #include <QVector4D>
 
-class Material {
-
+class Material
+{
 public:
     Material();
 
