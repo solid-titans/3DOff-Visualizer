@@ -131,17 +131,28 @@ void GLWidget:: paintGL()
 // Função para escolher o arquivo e projetar na tela
 void GLWidget::showFileOpenDialog()
 {
+    // Salvar informações do último diretório
+    // acessado
+    const QString DEFAULT_DIR_KEY("default_dir");
+    QSettings MySettings;
+
     QByteArray fileFormat = "off";
     QString fileName;
+
     fileName = QFileDialog :: getOpenFileName ( this ,
     "Open File" ,
-    QDir::home().absolutePath() ,
+    MySettings.value(DEFAULT_DIR_KEY).toString(),
     QString ( "%1 Files (*.%2)" )
     . arg ( QString ( fileFormat . toUpper () ) )
     . arg ( QString ( fileFormat )), nullptr, QFileDialog::DontUseNativeDialog);
 
     if (!fileName.isEmpty())
     {
+        // Salvando último diretório acessado
+        QDir CurrentDir;
+        MySettings.setValue(DEFAULT_DIR_KEY,
+                            CurrentDir.absoluteFilePath(fileName));
+
         readOFFFile(fileName);
 
         genNormals();
@@ -542,7 +553,7 @@ void GLWidget :: mouseReleaseEvent ( QMouseEvent * event )
 
 void GLWidget :: wheelEvent ( QWheelEvent * event )
 {
-    zoom += 0.001 * event -> delta ();
+    zoom += 0.001 * event->angleDelta().y();
 }
 
 void GLWidget :: animate()
