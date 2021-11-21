@@ -65,6 +65,7 @@ color: rgb(255, 255, 255);</string>
      <string>File</string>
     </property>
     <addaction name="actionOpenFile"/>
+    <addaction name="action_Screenshot"/>
    </widget>
    <widget class="QMenu" name="menuTexturas">
     <property name="title">
@@ -87,7 +88,7 @@ color: rgb(255, 255, 255);</string>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpenFile">
    <property name="text">
-    <string>Open</string>
+    <string>&amp;Open</string>
    </property>
   </action>
   <action name="actionPredefinida">
@@ -116,6 +117,11 @@ color: rgb(255, 255, 255);</string>
     <string>Phong Normal</string>
    </property>
   </action>
+  <action name="action_Screenshot">
+   <property name="text">
+    <string>&amp;Screenshot</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -124,6 +130,7 @@ color: rgb(255, 255, 255);</string>
    <header>glwidget.h</header>
    <container>1</container>
    <slots>
+    <signal>statusBarMessage(QString)</signal>
     <slot>toggleBackgroundColor(bool)</slot>
     <slot>showFileOpenDialog()</slot>
     <slot>loadGouraud()</slot>
@@ -134,6 +141,7 @@ color: rgb(255, 255, 255);</string>
     <slot>fong()</slot>
     <slot>textura()</slot>
     <slot>normal()</slot>
+    <slot>takeScreenshot()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -248,6 +256,38 @@ color: rgb(255, 255, 255);</string>
     <hint type="destinationlabel">
      <x>453</x>
      <y>279</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>widget</sender>
+   <signal>statusBarMessage(QString)</signal>
+   <receiver>statusbar</receiver>
+   <slot>showMessage(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>453</x>
+     <y>587</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>action_Screenshot</sender>
+   <signal>triggered()</signal>
+   <receiver>widget</receiver>
+   <slot>takeScreenshot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>453</x>
+     <y>267</y>
     </hint>
    </hints>
   </connection>

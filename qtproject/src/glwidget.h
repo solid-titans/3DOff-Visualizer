@@ -23,6 +23,7 @@ signals:
 public slots:
     void toggleBackgroundColor(bool toBlack);
     void showFileOpenDialog ();
+    void takeScreenshot();
     void animate();
     void gurro();
     void fong();

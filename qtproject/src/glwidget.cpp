@@ -175,7 +175,7 @@ void GLWidget::readOFFFile(const QString &fileName)
 {
     // A stream é usada pra abrir o arquivo
     std::ifstream stream;
-    stream.open(fileName.toLatin1(), std::ifstream::in);
+    stream.open(fileName.toUtf8(), std::ifstream::in);
 
     // Se o arquivo não foi aberto, gera esse warning
     if(!stream.is_open()) {
@@ -275,6 +275,8 @@ void GLWidget :: genNormals ()
     }
     for(unsigned int i = 0; i < numVertices; i++)
         normals[i].normalize();
+
+    emit statusBarMessage(QString("Samples %1, Faces %2").arg(numVertices).arg(numFaces));
 }
 
 /* As coordenadas cilindricas são geradas das texturas
@@ -531,6 +533,24 @@ void GLWidget :: keyPressEvent ( QKeyEvent * event )
             break;
         case Qt :: Key_Escape:
             qApp ->quit();
+    }
+}
+
+// Saving a image from the actual frame buffer on disk
+void GLWidget::takeScreenshot() {
+    QImage screenshot = grabFrameBuffer();
+
+    QString fileName;
+    fileName = QFileDialog::getSaveFileName(this, "Save File As", QDir::homePath(),
+                                            QString("PNG Files (*.png)"), nullptr, QFileDialog::DontUseNativeDialog);
+
+    // If filename exists write the image to disk
+    if(fileName.length()) {
+        if(!fileName.contains(".png"))
+            fileName += ".png";
+        if(screenshot.save(fileName, "PNG")) {
+            QMessageBox::information(this, "Screenshot", "Screenshot taken!", QMessageBox::Ok);
+        }
     }
 }
 
