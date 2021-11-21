@@ -57,25 +57,25 @@ color: rgb(255, 255, 255);</string>
      <x>0</x>
      <y>0</y>
      <width>908</width>
-     <height>24</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuArquivo">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionOpenFile"/>
     <addaction name="action_Screenshot"/>
    </widget>
    <widget class="QMenu" name="menuTexturas">
     <property name="title">
-     <string>Textures</string>
+     <string>&amp;Textures</string>
     </property>
     <addaction name="actionPredefinida"/>
    </widget>
    <widget class="QMenu" name="menuShaders">
     <property name="title">
-     <string>Shaders</string>
+     <string>&amp;Shaders</string>
     </property>
     <addaction name="actionGurro"/>
     <addaction name="actionPhong"/>
@@ -98,7 +98,7 @@ color: rgb(255, 255, 255);</string>
   </action>
   <action name="actionGurro">
    <property name="text">
-    <string>Gurro (Default)</string>
+    <string>&amp;Gurro (Default)</string>
    </property>
    <property name="toolTip">
     <string>Gurro (Default)</string>
@@ -106,12 +106,12 @@ color: rgb(255, 255, 255);</string>
   </action>
   <action name="actionPhong">
    <property name="text">
-    <string>Phong</string>
+    <string>&amp;Phong</string>
    </property>
   </action>
   <action name="actionPhong_with_Normal">
    <property name="text">
-    <string>Normal Texture</string>
+    <string>&amp;Normal Texture</string>
    </property>
    <property name="toolTip">
     <string>Phong Normal</string>
