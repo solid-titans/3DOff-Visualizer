@@ -11,7 +11,11 @@ This repository's objective is to implement the article **"Interactive Graphics 
 
 # Objectives
 
-- [ ] Create Qt interface
-- [ ] .off Reader
-- [ ] Shading
-- [ ] Texture
+- [x] Create Qt interface
+- [x] .off Reader
+- [x] Shading
+- [x] Texture
+- [ ] Improvement 
+- [ ] Comments
+- [ ] User manual
+- [ ] Executable
