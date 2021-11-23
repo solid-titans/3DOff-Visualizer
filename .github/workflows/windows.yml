@@ -30,8 +30,12 @@ jobs:
           tools-only: 'false'
           extra: '--external 7z'
       
+      - name: Print dir
+        run: ls '${{ github.workspace }}/qtproject/src/Qt/5.12.2/'
+
+
       - name: Building the artifact
         uses: actions/upload-artifact@v2
         with:
           name: Upload build for windows
-          path: '${{ github.workspace }}/qtproject/src/Qt'
+          path: '${{ github.workspace }}/qtproject/src/Qt/5.12.2/(your_arch)/bin'
