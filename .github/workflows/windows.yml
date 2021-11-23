@@ -34,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Upload build for windows
-          path: '${{ github.workspace }}/qtproject/src/Qt/$Qt5_DIR/win64_msvc2019_64/bin'
+          path: '${{ github.workspace }}/qtproject/src/Qt'
