@@ -29,10 +29,6 @@ jobs:
           setup-python: 'true'
           tools-only: 'false'
           extra: '--external 7z'
-      
-      - name: Print dir
-        run: ls $Qt5_Dir
-
 
       - name: Building the artifact
         uses: actions/upload-artifact@v2
