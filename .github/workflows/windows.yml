@@ -34,4 +34,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Upload build for windows
-          path: '${{ env.Qt5_Dir }}'
+          path: '${{ env.Qt5_Dir }}/bin'
