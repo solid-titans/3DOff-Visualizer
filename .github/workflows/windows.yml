@@ -33,7 +33,7 @@ jobs:
       - name: Compiling code for windows
         run: |
           cd '${{ github.workspace }}/qtproject/src'
-          '$(Qt5_Dir)/bin/qmake.exe' && make
+          '$Qt5_Dir/bin/qmake.exe' && make
           ls
 
       - name: Building the artifact
