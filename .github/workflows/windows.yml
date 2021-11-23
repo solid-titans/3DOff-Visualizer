@@ -31,7 +31,7 @@ jobs:
           extra: '--external 7z'
       
       - name: Print dir
-        run: ls '${{ github.workspace }}/qtproject/src/Qt/5.12.2/'
+        run: ls $Qt5_Dir
 
 
       - name: Building the artifact
