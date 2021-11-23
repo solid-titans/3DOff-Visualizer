@@ -273,6 +273,7 @@ DIST          = ../src/fgouraud.glsl \
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
+		../src/.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -509,6 +510,7 @@ Makefile: ../src/3Dvisualizer.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/
 		/usr/lib/qt/mkspecs/features/qt_config.prf \
 		/usr/lib/qt/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/qt/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/qt/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/qt/mkspecs/features/toolchain.prf \
 		/usr/lib/qt/mkspecs/features/default_pre.prf \
@@ -726,6 +728,7 @@ Makefile: ../src/3Dvisualizer.pro /usr/lib/qt/mkspecs/linux-g++/qmake.conf /usr/
 /usr/lib/qt/mkspecs/features/qt_config.prf:
 /usr/lib/qt/mkspecs/linux-g++/qmake.conf:
 /usr/lib/qt/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/qt/mkspecs/features/exclusive_builds.prf:
 /usr/lib/qt/mkspecs/features/toolchain.prf:
 /usr/lib/qt/mkspecs/features/default_pre.prf:
@@ -888,7 +891,12 @@ main.o: ../src/main.cpp ../src/mainwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../src/main.cpp
 
 mainwindow.o: ../src/mainwindow.cpp ../src/mainwindow.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		../src/glwidget.h \
+		../src/camera.h \
+		../src/light.h \
+		../src/material.h \
+		../src/trackball.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../src/mainwindow.cpp
 
 material.o: ../src/material.cpp ../src/material.h

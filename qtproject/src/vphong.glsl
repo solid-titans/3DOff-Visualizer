@@ -19,5 +19,5 @@ void main ()
     fL = lightPosition.xyz - eyePosition.xyz;
     fE = - eyePosition.xyz;
 
-    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+    gl_Position = projectionMatrix * eyePosition;
 }

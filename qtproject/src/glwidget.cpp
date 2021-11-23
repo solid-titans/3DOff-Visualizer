@@ -207,14 +207,14 @@ void GLWidget::readOFFFile(const QString &fileName)
         QVector4D min(maxLim, maxLim, maxLim, 1.0);
 
         for(unsigned int i = 0; i < numVertices; i++) {
-            float x, y, z;
+            double x, y, z;
             stream >> x >> y >> z;
-            max.setX(qMax(max.x(),x));
-            max.setY(qMax(max.y(),y));
-            max.setZ(qMax(max.z(),z));
-            min.setX(qMin(min.x(),x));
-            min.setY(qMin(min.y(),y));
-            min.setZ(qMin(min.z(),z));
+            max.setX(qMax((double)max.x(),x));
+            max.setY(qMax((double)max.y(),y));
+            max.setZ(qMax((double)max.z(),z));
+            min.setX(qMin((double)min.x(),x));
+            min.setY(qMin((double)min.y(),y));
+            min.setZ(qMin((double)min.z(),z));
 
             vertices[i] = QVector4D(x, y, z, 1.0);
         }
