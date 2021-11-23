@@ -22,13 +22,19 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          dir: '${{ github.workspace }}/qtproject/src'
+          dir: '${{ github.workspace }}/qtproject'
           install-deps: 'true'
           modules: 'qtcharts qtwebengine'
           cached: 'false'
           setup-python: 'true'
           tools-only: 'false'
           extra: '--external 7z'
+
+      - name: Compiling code for windows
+        run: |
+          cd '${{ github.workspace }}/qtproject/src'
+          '$(Qt5_Dir)/bin/qmake.exe' && make
+          ls
 
       - name: Building the artifact
         uses: actions/upload-artifact@v2
