@@ -58,7 +58,7 @@ color: rgb(255, 255, 255);</string>
          </size>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="Shaders">
          <attribute name="title">
@@ -100,11 +100,6 @@ color: rgb(255, 255, 255);</string>
            </item>
           </layout>
          </widget>
-        </widget>
-        <widget class="QWidget" name="Lighting">
-         <attribute name="title">
-          <string>Lighting</string>
-         </attribute>
         </widget>
         <widget class="QWidget" name="Misc">
          <attribute name="title">

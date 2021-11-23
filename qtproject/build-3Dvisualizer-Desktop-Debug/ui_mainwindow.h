@@ -44,7 +44,6 @@ public:
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout_2;
     QComboBox *ShaderOptions;
-    QWidget *Lighting;
     QWidget *Misc;
     QPushButton *ChangeBackground;
     QPushButton *pushButton;
@@ -112,9 +111,6 @@ public:
         verticalLayout_2->addWidget(ShaderOptions);
 
         tabWidget->addTab(Shaders, QString());
-        Lighting = new QWidget();
-        Lighting->setObjectName(QString::fromUtf8("Lighting"));
-        tabWidget->addTab(Lighting, QString());
         Misc = new QWidget();
         Misc->setObjectName(QString::fromUtf8("Misc"));
         ChangeBackground = new QPushButton(Misc);
@@ -155,7 +151,7 @@ public:
         QObject::connect(ShaderOptions, SIGNAL(currentTextChanged(QString)), widget, SLOT(changeShader(QString)));
         QObject::connect(ChangeBackground, SIGNAL(pressed()), widget, SLOT(chooseBackgroundColor()));
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -182,7 +178,6 @@ public:
         ShaderOptions->setItemText(3, QCoreApplication::translate("MainWindow", "Phong", nullptr));
 
         tabWidget->setTabText(tabWidget->indexOf(Shaders), QCoreApplication::translate("MainWindow", "Shaders", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(Lighting), QCoreApplication::translate("MainWindow", "Lighting", nullptr));
         ChangeBackground->setText(QCoreApplication::translate("MainWindow", "Change background color", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(Misc), QCoreApplication::translate("MainWindow", "Misc", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "Exit", nullptr));
