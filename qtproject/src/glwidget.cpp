@@ -2,6 +2,8 @@
 #include <fstream>
 #include <iostream>
 #include <QtGlobal>
+#include <QColorDialog>
+
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
 {
     vertices = NULL;
@@ -30,12 +32,14 @@ GLWidget::~GLWidget()
     destroyShaders();
 }
 
-void GLWidget::toggleBackgroundColor(bool toBlack)
+void GLWidget::chooseBackgroundColor()
 {
-    if (toBlack)
-        glClearColor(0, 0, 0, 1);
-    else
-        glClearColor(1, 1, 1, 1);
+
+    QColor color = QColorDialog::getColor(Qt::white,this,"Choose Color",QColorDialog::DontUseNativeDialog);
+
+    if(color.isValid()){
+        glClearColor(color.redF(), color.greenF(), color.blueF(), color.alphaF());
+    }
 
     updateGL();
 }
@@ -581,30 +585,18 @@ void GLWidget :: animate()
     updateGL();
 }
 
-void GLWidget::gurro()
-{
-    currentShader = 0;
-    createShaders();
-    updateGL();
-}
 
-void GLWidget::fong()
-{
-    currentShader = 1;
-    createShaders();
-    updateGL();
-}
+void GLWidget :: changeShader(const QString shaderName) {
 
-void GLWidget::textura()
-{
-    currentShader = 2;
-    createShaders();
-    updateGL();
-}
+    if(shaderName == "Gouraud")
+        currentShader = 0;
+    else if (shaderName == "Phong")
+        currentShader = 1;
+    else if (shaderName == "Texture")
+        currentShader = 2;
+    else if (shaderName == "Normal")
+        currentShader = 3;
 
-void GLWidget::normal()
-{
-    currentShader = 3;
     createShaders();
     updateGL();
 }

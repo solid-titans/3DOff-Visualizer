@@ -26,21 +26,107 @@ color: rgb(255, 255, 255);</string>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="GLWidget" name="widget" native="true">
-      <property name="enabled">
-       <bool>true</bool>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinAndMaxSize</enum>
       </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QCheckBox" name="checkBox">
-      <property name="text">
-       <string>Toogle background color</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
+      <item>
+       <widget class="GLWidget" name="widget" native="true">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>600</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="currentIndex">
+         <number>2</number>
+        </property>
+        <widget class="QWidget" name="Shaders">
+         <attribute name="title">
+          <string>Shaders</string>
+         </attribute>
+         <widget class="QWidget" name="verticalLayoutWidget">
+          <property name="geometry">
+           <rect>
+            <x>40</x>
+            <y>70</y>
+            <width>191</width>
+            <height>171</height>
+           </rect>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QComboBox" name="ShaderOptions">
+             <item>
+              <property name="text">
+               <string>Gouraud</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Texture</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Normal</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Phong</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+        <widget class="QWidget" name="Lighting">
+         <attribute name="title">
+          <string>Lighting</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="Misc">
+         <attribute name="title">
+          <string>Misc</string>
+         </attribute>
+         <widget class="QPushButton" name="ChangeBackground">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>180</y>
+            <width>251</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Change background color</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="QPushButton" name="pushButton">
@@ -57,7 +143,7 @@ color: rgb(255, 255, 255);</string>
      <x>0</x>
      <y>0</y>
      <width>908</width>
-     <height>23</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuArquivo">
@@ -67,23 +153,7 @@ color: rgb(255, 255, 255);</string>
     <addaction name="actionOpenFile"/>
     <addaction name="action_Screenshot"/>
    </widget>
-   <widget class="QMenu" name="menuTexturas">
-    <property name="title">
-     <string>&amp;Textures</string>
-    </property>
-    <addaction name="actionPredefinida"/>
-   </widget>
-   <widget class="QMenu" name="menuShaders">
-    <property name="title">
-     <string>&amp;Shaders</string>
-    </property>
-    <addaction name="actionGurro"/>
-    <addaction name="actionPhong"/>
-    <addaction name="actionPhong_with_Normal"/>
-   </widget>
    <addaction name="menuArquivo"/>
-   <addaction name="menuTexturas"/>
-   <addaction name="menuShaders"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpenFile">
@@ -131,17 +201,14 @@ color: rgb(255, 255, 255);</string>
    <container>1</container>
    <slots>
     <signal>statusBarMessage(QString)</signal>
-    <slot>toggleBackgroundColor(bool)</slot>
+    <slot>chooseBackgroundColor()</slot>
     <slot>showFileOpenDialog()</slot>
     <slot>loadGouraud()</slot>
     <slot>loadPhongCommon()</slot>
     <slot>loadPhongTexture()</slot>
     <slot>loadPhongNormal()</slot>
-    <slot>gurro()</slot>
-    <slot>fong()</slot>
-    <slot>textura()</slot>
-    <slot>normal()</slot>
     <slot>takeScreenshot()</slot>
+    <slot>changeShader(QString)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -164,22 +231,6 @@ color: rgb(255, 255, 255);</string>
    </hints>
   </connection>
   <connection>
-   <sender>checkBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>widget</receiver>
-   <slot>toggleBackgroundColor(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>193</x>
-     <y>550</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>184</x>
-     <y>148</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionOpenFile</sender>
    <signal>triggered()</signal>
    <receiver>widget</receiver>
@@ -192,70 +243,6 @@ color: rgb(255, 255, 255);</string>
     <hint type="destinationlabel">
      <x>184</x>
      <y>148</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionPhong</sender>
-   <signal>triggered()</signal>
-   <receiver>widget</receiver>
-   <slot>fong()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>453</x>
-     <y>279</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionGurro</sender>
-   <signal>triggered()</signal>
-   <receiver>widget</receiver>
-   <slot>gurro()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>453</x>
-     <y>279</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionPhong_with_Normal</sender>
-   <signal>triggered()</signal>
-   <receiver>widget</receiver>
-   <slot>normal()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>453</x>
-     <y>279</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionPredefinida</sender>
-   <signal>triggered()</signal>
-   <receiver>widget</receiver>
-   <slot>textura()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>453</x>
-     <y>279</y>
     </hint>
    </hints>
   </connection>
@@ -288,6 +275,38 @@ color: rgb(255, 255, 255);</string>
     <hint type="destinationlabel">
      <x>453</x>
      <y>267</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ShaderOptions</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>widget</receiver>
+   <slot>changeShader(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>650</x>
+     <y>288</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>200</x>
+     <y>267</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ChangeBackground</sender>
+   <signal>pressed()</signal>
+   <receiver>widget</receiver>
+   <slot>chooseBackgroundColor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>650</x>
+     <y>268</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>200</x>
+     <y>283</y>
     </hint>
    </hints>
   </connection>

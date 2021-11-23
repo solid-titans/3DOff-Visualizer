@@ -10,6 +10,14 @@
 #include "light.h"
 #include "material.h"
 #include "trackball.h"
+
+enum ShaderOptions {
+    Gouraud,
+    Phong,
+    Texture,
+    Normal
+};
+
 class GLWidget : public QGLWidget
 {
     Q_OBJECT
@@ -21,14 +29,11 @@ signals:
     void statusBarMessage(QString ns);
 
 public slots:
-    void toggleBackgroundColor(bool toBlack);
+    void chooseBackgroundColor();
     void showFileOpenDialog ();
     void takeScreenshot();
     void animate();
-    void gurro();
-    void fong();
-    void normal();
-    void textura();
+    void changeShader(const QString shaderName);
 
 protected:
     void initializeGL();
