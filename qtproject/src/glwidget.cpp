@@ -562,18 +562,23 @@ void GLWidget :: destroyShaders ()
 void GLWidget :: keyPressEvent ( QKeyEvent * event )
 {
     switch (event ->key ()){
-        case Qt :: Key_0 :
+        case Qt :: Key_1 :
             currentShader = 0;
             createShaders ();
             updateGL ();
             break ;
-        case Qt :: Key_1 :
+        case Qt :: Key_2 :
             currentShader = 1;
             createShaders ();
             updateGL ();
             break;
-        case Qt :: Key_2 :
+        case Qt :: Key_3 :
             currentShader = 2;
+            createShaders ();
+            updateGL();
+            break;
+        case Qt :: Key_4 :
+            currentShader = 3;
             createShaders ();
             updateGL();
             break;
