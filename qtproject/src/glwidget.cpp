@@ -4,37 +4,49 @@
 #include <QtGlobal>
 #include <QColorDialog>
 
+/**
+ * @brief Iniciar o widget do visualizador do Objeto 3D
+ * @param parent é a referência do Widget
+ */
 GLWidget::GLWidget(QWidget *parent) : QGLWidget(parent)
 {
-    vertices = NULL;
-    normals = NULL;
+    vertices  = NULL;
+    normals   = NULL;
     texCoords = NULL;
-    tangents = NULL;
-    indices = NULL;
+    tangents  = NULL;
+    indices   = NULL;
 
-    vboVertices = NULL;
-    vboNormals = NULL;
+    vboVertices  = NULL;
+    vboNormals   = NULL;
     vboTexCoords = NULL;
-    vboTangents = NULL;
-    vboIndices = NULL;
+    vboTangents  = NULL;
+    vboIndices   = NULL;
 
-    shaderProgram = NULL;
-    vertexShader = NULL;
+    shaderProgram  = NULL;
+    vertexShader   = NULL;
     fragmentShader = NULL;
-    currentShader = 0;
+    currentShader  = 0;
 
     zoom = 0.0;
 }
 
+/**
+ * @brief Desconstrutor do visualizador OpenGL
+ */
 GLWidget::~GLWidget()
 {
     destroyVBOs();
     destroyShaders();
 }
 
+/**
+ * @brief Escolher uma nova cor de fundo para o
+ * Widget, que irá ficar atrás do objeto
+ */
 void GLWidget::chooseBackgroundColor()
 {
 
+    // Abrir uma paleta de cores do próprio Qt para permitir com que o usuário escolha a nova cor
     QColor color = QColorDialog::getColor(Qt::white,this,"Choose Color",QColorDialog::DontUseNativeDialog);
 
     if(color.isValid()){
@@ -44,6 +56,10 @@ void GLWidget::chooseBackgroundColor()
     updateGL();
 }
 
+/**
+ * @brief Inicializar recursos para o OpenGL, nesse
+ * caso, estaremos iniciando as texturas
+ */
 void GLWidget::initializeGL()
 {
    glEnable(GL_DEPTH_TEST);
@@ -60,6 +76,11 @@ void GLWidget::initializeGL()
    timer.start (0) ;
 }
 
+/**
+ * @brief Função que é chamada toda vez que o Widget é re-escalonado
+ * @param width - novo comprimento
+ * @param height - nova altura
+ */
 void GLWidget:: resizeGL(int width, int height)
 {
     glViewport (0, 0, width , height );
@@ -69,6 +90,9 @@ void GLWidget:: resizeGL(int width, int height)
     updateGL ();
 }
 
+/**
+ * @brief Função chamada toda vez que o widget precisar ser desenhado
+ */
 void GLWidget:: paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT |  GL_DEPTH_BUFFER_BIT);
@@ -132,7 +156,10 @@ void GLWidget:: paintGL()
     shaderProgram -> release();
 }
 
-// Função para escolher o arquivo e projetar na tela
+/**
+ * @brief Função chamada toda vez que o usuário pedir
+ * para abrir um novo arquivo 3D
+ */
 void GLWidget::showFileOpenDialog()
 {
     // Salvar informações do último diretório
@@ -140,9 +167,12 @@ void GLWidget::showFileOpenDialog()
     const QString DEFAULT_DIR_KEY("default_dir");
     QSettings MySettings;
 
+    // Formato do arquivo
     QByteArray fileFormat = "off";
-    QString fileName;
 
+    // Chamar o gerenciador de arquivos e permitir
+    // que o usuário selecione um arquivo
+    QString fileName;
     fileName = QFileDialog :: getOpenFileName ( this ,
     "Open File" ,
     MySettings.value(DEFAULT_DIR_KEY).toString(),
@@ -152,7 +182,8 @@ void GLWidget::showFileOpenDialog()
 
     if (!fileName.isEmpty())
     {
-        // Salvando último diretório acessado
+        // Salvando último diretório acessado em
+        // cache para futuros usos
         QDir CurrentDir;
         MySettings.setValue(DEFAULT_DIR_KEY,
                             CurrentDir.absoluteFilePath(fileName));
@@ -164,24 +195,23 @@ void GLWidget::showFileOpenDialog()
         genTangents();
 
         createVBOs();
-        currentShader = 0;
         createShaders();
 
         updateGL();
     }
 }
 
-/*
- * Essa função é responsável por fazer a  leitura do arquivo OFF usando a classe nativa stream,
+/**
+ * @brief Essa função é responsável por fazer a  leitura do arquivo OFF usando a classe nativa stream,
  * salvando as informações da malha.
+ * @param fileName é o nome do arquivo 3D
  */
 void GLWidget::readOFFFile(const QString &fileName)
 {
-    // A stream é usada pra abrir o arquivo
     std::ifstream stream;
     stream.open(fileName.toUtf8(), std::ifstream::in);
 
-    // Se o arquivo não foi aberto, gera esse warning
+    // Se o arquivo não foi aberto, gera uma mensagem de erro
     if(!stream.is_open()) {
         qWarning("Cannot open file.");
         return;
@@ -255,7 +285,8 @@ void GLWidget::readOFFFile(const QString &fileName)
     stream.close();
 }
 
-/* Calcula as normais nos vétices da malha
+/**
+ * @brief Calcula as normais nos vétices da malha
  * As normais são salvas como objetos Qvector3D no array
  */
 void GLWidget :: genNormals ()
@@ -283,9 +314,10 @@ void GLWidget :: genNormals ()
     emit statusBarMessage(QString("Samples %1, Faces %2").arg(numVertices).arg(numFaces));
 }
 
-/* As coordenadas cilindricas são geradas das texturas
- * para os vertices da malha.
- * O array texCoords armazena as cordenadas dos objetos Qvector2D
+/**
+ * @brief As coordenadas cilindricas são geradas das texturas
+ * para os vertices da malha. O array texCoords armazena as
+ * cordenadas dos objetos Qvector2D
  */
 void GLWidget :: genTexCoordsCylinder ()
 {
@@ -315,8 +347,8 @@ void GLWidget :: genTexCoordsCylinder ()
     }
 }
 
-/*
- * Para cada vértice são estimados os vetores tangentes.
+/**
+ * @brief Para cada vértice são estimados os vetores tangentes.
  * Essa função foi baseada no método de Langeyl que usa o
  * mapeamento de normais como base
  */
@@ -380,9 +412,11 @@ void GLWidget :: genTangents ()
     delete[] bitangents;
 }
 
-/* Os VBOs do OpenGL são criados nessa função pra renderizar as malhas
- * Também utilizamos os Vertex Buffer Objects (VBO) pra manipular diretamente os dados do servidor
-*/
+/**
+ * @brief Os VBOs do OpenGL são criados nessa função pra
+ * renderizar as malhas. Também utilizamos os Vertex Buffer Objects (VBO)
+ * pra manipular diretamente os dados do servidor
+ */
 void GLWidget :: createVBOs ()
 {
     // Isso é pra não dar problemas de superposição e lixo nas variáveis
@@ -468,23 +502,28 @@ void GLWidget::destroyVBOs()
     }
 }
 
-// Os shaders do objeto são carregados nessa função
-// Mas a aplicação do shader no objeto é feito em outra função
+/**
+ * @brief  Os shaders do objeto são carregados nessa função
+ * Mas a aplicação do shader no objeto é feito em outra função
+ */
 void GLWidget :: createShaders ()
 {
     destroyShaders();
 
+    // Carregar todos
     QString   vertexShaderFile[] = {":/shaders/vgouraud.glsl",
                                     ":/shaders/vphong.glsl",
                                     ":/shaders/vtexture.glsl",
                                     ":/shaders/vnormal.glsl"
                                    };
+
     QString fragmentShaderFile[] = {":/shaders/fgouraud.glsl",
                                     ":/shaders/fphong.glsl",
                                     ":/shaders/ftexture.glsl",
                                     ":/shaders/fnormal.glsl"
                                     };
 
+    // Iniciar shader atualmente selecionado
     vertexShader = new QGLShader(QGLShader::Vertex);
     if(!vertexShader->compileSourceFile(vertexShaderFile[currentShader]))
         qWarning() << vertexShader->log();
@@ -501,7 +540,10 @@ void GLWidget :: createShaders ()
         qWarning() << shaderProgram->log() << Qt::endl;
 }
 
-// Essa função deleta os shaders compilados aplicados no programa
+/**
+ * @brief Essa função deleta os shaders
+ * compilados aplicados no programa
+ */
 void GLWidget :: destroyShaders ()
 {
     delete vertexShader;
@@ -540,7 +582,11 @@ void GLWidget :: keyPressEvent ( QKeyEvent * event )
     }
 }
 
-// Saving a image from the actual frame buffer on disk
+/**
+ * @brief Função chamada quando o usuário
+ * que salvar uma captura de tela do frame
+ * atual do OpenGL
+ */
 void GLWidget::takeScreenshot() {
     QImage screenshot = grabFrameBuffer();
 
@@ -548,7 +594,8 @@ void GLWidget::takeScreenshot() {
     fileName = QFileDialog::getSaveFileName(this, "Save File As", QDir::homePath(),
                                             QString("PNG Files (*.png)"), nullptr, QFileDialog::DontUseNativeDialog);
 
-    // If filename exists write the image to disk
+    // Se usuário efetivamente escolheu um arquivo, salvar
+    // no disco
     if(fileName.length()) {
         if(!fileName.contains(".png"))
             fileName += ".png";
@@ -585,17 +632,13 @@ void GLWidget :: animate()
     updateGL();
 }
 
-
+/**
+ * @brief Função que é chamada após o usuário trocar o shader
+ * @param shaderName é o nome do Shader
+ */
 void GLWidget :: changeShader(const QString shaderName) {
 
-    if(shaderName == "Gouraud")
-        currentShader = 0;
-    else if (shaderName == "Phong")
-        currentShader = 1;
-    else if (shaderName == "Texture")
-        currentShader = 2;
-    else if (shaderName == "Normal")
-        currentShader = 3;
+    currentShader = this->available_shaders.at(shaderName.toStdString());
 
     createShaders();
     updateGL();

@@ -10,16 +10,18 @@
 #include "light.h"
 #include "material.h"
 #include "trackball.h"
-
-enum ShaderOptions {
-    Gouraud,
-    Phong,
-    Texture,
-    Normal
-};
+#include <map>
 
 class GLWidget : public QGLWidget
 {
+
+    const std::map<std::string,int> available_shaders = {
+        {"Gouraud",0},
+        {"Phong",1},
+        {"Texture",2},
+        {"Normal",3}
+    };
+
     Q_OBJECT
 public:
     explicit GLWidget(QWidget *parent = 0);
