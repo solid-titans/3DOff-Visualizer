@@ -4,6 +4,8 @@
 
 ![3d-symbol](https://i.imgur.com/HyAi8gL.png)
 
+![Interface](https://i.imgur.com/1d6JCXL.jpg)
+
 A C++ application for reading .off files and visualizing using Qt.
 
 # Motivation
