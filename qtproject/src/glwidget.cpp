@@ -559,26 +559,29 @@ void GLWidget :: destroyShaders ()
      }
 }
 
-void GLWidget :: keyPressEvent ( QKeyEvent * event )
-{
+/**
+ * @brief Gerenciar os inputs do teclado feito pelo usuario
+ * @param Tecla atualmente pressionada
+ */
+void GLWidget :: keyPressEvent ( QKeyEvent * event ) {
     switch (event ->key ()){
         case Qt :: Key_1 :
-            currentShader = 0;
+            currentShader = 0; // Gouraud
             createShaders ();
             updateGL ();
             break ;
         case Qt :: Key_2 :
-            currentShader = 1;
+            currentShader = 1; // Phong
             createShaders ();
             updateGL ();
             break;
         case Qt :: Key_3 :
-            currentShader = 2;
+            currentShader = 2; // Normal
             createShaders ();
             updateGL();
             break;
         case Qt :: Key_4 :
-            currentShader = 3;
+            currentShader = 3; // Texture
             createShaders ();
             updateGL();
             break;
@@ -627,6 +630,12 @@ void GLWidget :: mouseReleaseEvent ( QMouseEvent * event )
         trackBall . mouseRelease (event -> pos());
 }
 
+/**
+ * @brief Ação de fazer zoom no objeto que está
+ * sendo atualmente exibida
+ * @param event - guardar valores referentes
+ * ao roda do mouse
+ */
 void GLWidget :: wheelEvent ( QWheelEvent * event )
 {
     zoom += 0.001 * event->angleDelta().y();
@@ -639,7 +648,8 @@ void GLWidget :: animate()
 
 /**
  * @brief Função que é chamada após o usuário trocar o shader
- * @param shaderName é o nome do Shader
+ * no menu de edição
+ * @param shaderName - nome do Shader
  */
 void GLWidget :: changeShader(const QString shaderName) {
 
