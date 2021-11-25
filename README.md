@@ -18,7 +18,7 @@ This repository's objective is to implement the article **"Interactive Graphics 
 - [x] .off Reader
 - [x] Shading
 - [x] Texture
-- [ ] Improvement 
-- [ ] Comments
-- [ ] User manual
-- [ ] Executable
+- [x] Improvement - malha mista 
+- [x] Comments
+- [x] [User manual](https://github.com/MrLaTeXWorkshop/3DOff-Visualizer-documentation)
+- [x] Executable
