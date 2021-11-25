@@ -264,13 +264,16 @@ void GLWidget::readOFFFile(const QString &fileName)
         unsigned int a, b, c, x;
 
         stream >> line >> a >> b >> c;
-        std::string::size_type sz;   // alias of size_t
+        std::string::size_type sz;
         int i_dec = std::stoi (line,&sz);
+
         indices[i*3  ]=a;
         indices[i*3+1]=b;
         indices[i*3+2]=c;
+
         i_dec -= 3;
         i++;
+
         while(i_dec!= 0){
             stream >> x;
             indices[i*3  ]=a;
@@ -349,7 +352,7 @@ void GLWidget :: genTexCoordsCylinder ()
 
 /**
  * @brief Para cada vértice são estimados os vetores tangentes.
- * Essa função foi baseada no método de Langeyl que usa o
+ * Essa função foi baseada no método de Lengyel que usa o
  * mapeamento de normais como base
  */
 void GLWidget :: genTangents ()
@@ -419,7 +422,7 @@ void GLWidget :: genTangents ()
  */
 void GLWidget :: createVBOs ()
 {
-    // Isso é pra não dar problemas de superposição e lixo nas variáveis
+    // Para não dar problemas de superposição e lixo nas variáveis
     destroyVBOs();
 
     // Usado pra armazenar a posição dos vertices
@@ -510,7 +513,7 @@ void GLWidget :: createShaders ()
 {
     destroyShaders();
 
-    // Carregar todos
+    // Carregar todos os shaders
     QString   vertexShaderFile[] = {":/shaders/vgouraud.glsl",
                                     ":/shaders/vphong.glsl",
                                     ":/shaders/vtexture.glsl",
